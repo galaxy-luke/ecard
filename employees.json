@@ -1,0 +1,62 @@
+[
+  {
+    "Code": "G001",
+    "CnName": "王大明",
+    "EnName": "David Wang",
+    "JobTitle": "業務經理",
+    "ServiceYears": "5年",
+    "DeptName": "業務部",
+    "Email": "david.wang@example.com",
+    "MobilePhone": "0912-345-678",
+    "Address": "台北市信義區東興路51號九樓",
+    "Photo": "images/default.png"
+  },
+  {
+    "Code": "G002",
+    "CnName": "李小美",
+    "EnName": "Amy Lee",
+    "JobTitle": "行銷專員",
+    "ServiceYears": "3年",
+    "DeptName": "行銷部",
+    "Email": "amy.lee@example.com",
+    "MobilePhone": "0923-456-789",
+    "Address": "台北市信義區東興路51號九樓",
+    "Photo": "images/default.png"
+  },
+  {
+    "Code": "G003",
+    "CnName": "張志明",
+    "EnName": "Tom Chang",
+    "JobTitle": "資深工程師",
+    "ServiceYears": "8年",
+    "DeptName": "技術部",
+    "Email": "tom.chang@example.com",
+    "MobilePhone": "0934-567-890",
+    "Address": "台北市信義區東興路51號九樓",
+    "Photo": "images/default.png"
+  },
+  {
+    "Code": "G004",
+    "CnName": "陳雅婷",
+    "EnName": "Tina Chen",
+    "JobTitle": "人資專員",
+    "ServiceYears": "2年",
+    "DeptName": "人資部",
+    "Email": "tina.chen@example.com",
+    "MobilePhone": "0945-678-901",
+    "Address": "台北市信義區東興路51號九樓",
+    "Photo": "images/default.png"
+  },
+  {
+    "Code": "G005",
+    "CnName": "林建宏",
+    "EnName": "Kevin Lin",
+    "JobTitle": "財務主管",
+    "ServiceYears": "10年",
+    "DeptName": "財務部",
+    "Email": "kevin.lin@example.com",
+    "MobilePhone": "0956-789-012",
+    "Address": "台北市信義區東興路51號九樓",
+    "Photo": "images/default.png"
+  }
+]

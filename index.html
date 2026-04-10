@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>數位行銷中心 - 陳天祥 Sean Chen</title>
+    <!-- 引入 Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="card-container">
+        <!-- 頂部 Header -->
+        <div class="header">
+            <img src="assets/logo.png" alt="Logo" class="logo">
+        </div>
+
+        <!-- 大頭照區 -->
+        <div class="profile-section">
+            <div class="profile-pic-wrapper">
+                <img src="images/default.png" alt="Profile Picture" class="profile-pic">
+            </div>
+        </div>
+
+        <!-- 個人資訊 -->
+        <div class="info-section">
+            <div class="dept-title">
+                數位行銷中心 行銷企劃組 專員
+            </div>
+            <h1 class="name">陳天祥 <span class="nickname">小天</span></h1>
+            <div class="english-name">Sean Chen</div>
+        </div>
+
+        <!-- 聯絡資訊列表 -->
+        <ul class="contact-list">
+            <li>
+                <div class="icon-box"><img src="assets/phone_icon.png" alt="Phone"></div>
+                <div class="contact-text"><a href="tel:0956723423">0956-723-423</a></div>
+            </li>
+            <li>
+                <div class="icon-box"><img src="assets/tel_icon.png" alt="Tel"></div>
+                <div class="contact-text"><a href="tel:0287681168">02-8768-1168 #312</a></div>
+            </li>
+            <li>
+                <div class="icon-box"><img src="assets/mail_icon.png" alt="Email"></div>
+                <div class="contact-text"><a href="mailto:annayang@geosun.com.tw">annayang@geosun.com.tw</a></div>
+            </li>
+            <li>
+                <div class="icon-box"><img src="assets/add_icon.png" alt="Address"></div>
+                <div class="contact-text">110 台北市信義區東興路51號9樓</div>
+            </li>
+            <!-- <li class="copy" style="cursor: pointer;">
+                <div class="icon-box icon-line"><img src="https://img.icons8.com/color/48/000000/line-me.png" alt="Line"
+                        style="width: 20px;"></div>
+                <div class="contact-text" id="lineId">annayang0407</div>
+                <span style="font-size: 10px; color: #999; margin-left: 5px;">(點擊複製 ID)</span>
+            </li> -->
+            <li>
+                <div class="icon-box icon-web"><img src="assets/web_icon.png" alt="Web"></div>
+                <div class="contact-text"><a href="https://www.geosun.com.tw/"
+                        target="_blank">https://www.geosun.com.tw/</a></div>
+            </li>
+        </ul>
+
+        <!-- 浮動功能鈕 -->
+        <div class="actions">
+            <button id="code-btn" title="QR Code">
+                <img src="assets/qr_icon.png" alt="QR Code">
+            </button>
+            <button id="share-btn" onclick="ShareLink()" title="分享連結">
+                <img src="assets/share_icon.png" alt="Share">
+            </button>
+        </div>
+
+        <!-- 底部波浪裝飾 -->
+        <div class="bottom-bg">
+            <img src="assets/bottom.png" alt="Bottom Wave">
+        </div>
+    </div>
+
+    <!-- QR Code 彈窗 (Modal) -->
+    <div id="qrcode" class="popup-mask">
+        <div class="modal">
+            <div class="modal-close">×</div>
+            <h2>掃描 QR code</h2>
+            <div id="qrcode-img-container">
+                <!-- 動態注入 QR Code 圖片 -->
+            </div>
+            <div class="btn-outline">關閉</div>
+        </div>
+    </div>
+
+    <!-- 預留隱藏欄位供 JS 抓取名稱 -->
+    <input type="hidden" id="hdnNameCH" value="楊羽瑄">
+    <input type="hidden" id="hdnNameEN" value="Anna Yang">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>員工列表</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+<div class="container mt-4">
+    <h2>員工列表</h2>
+    <div class="mb-3">
+<!--        <button class="btn btn-primary btn-sm" onclick="downloadJson()">下載 JSON</button>-->
+<!--        <a href="/Index.html" class="btn btn-secondary btn-sm">返回員工資料let result = await pool.request().query(`
+            SELECT E.EmployeeId, E.Code, E.CnName, E.EnName, E.ServiceYears,
+                   D.Name AS DeptName, E.Email, E.MobilePhone, E.Address , E.LastWorkDate
+            FROM Employee E
+                     LEFT JOIN Department D ON E.DepartmentId = D.DepartmentId
+            WHERE CAST(E.LastWorkDate AS DATE) >= CAST(GETDATE() AS DATE) -- 新增的條件
+        `);</a>-->
+    </div>
+    <div id="errorMessage" class="alert alert-danger" style="display: none;"></div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>工號</th>
+                <th>姓名</th>
+                <th>服務年資</th>
+                <th>部門</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="employeeList"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Fetch and display employee list
+    // 載入員工清單
+    function loadEmployeeList() {
+        // 先嘗試載入 employees.json
+        $.ajax({
+            url: './employees.json?date=' + new Date().getTime(),
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                displayEmployees(data);
+                showToast('已從 employees.json 載入資料');
+            },
+            error: function(xhr) {
+                if (xhr.status === 404) {
+                    // employees.json 不存在，回退到 /api/employees
+                    $.ajax({
+                        url: 'http://192.168.100.150:3000/api/employees',
+                        method: 'GET',
+                        success: function(data) {
+                            displayEmployees(data);
+                            showToast('已從 API 載入資料');
+                        },
+                        error: function(xhr) {
+                            $('#errorMessage').show().text(xhr.responseJSON?.error || '無法取得員工列表');
+                        }
+                    });
+                } else {
+                    $('#errorMessage').show().text('無法載入 employees.json');
+                }
+            }
+        });
+    }
+
+    // 顯示員工清單
+    function displayEmployees(data) {
+        const tbody = $('#employeeList');
+        tbody.empty();
+        data.forEach(employee => {
+            tbody.append(`
+          <tr>
+            <td>${employee.Code}</td>
+            <td>${employee.CnName || ''}</td>
+            <td>${employee.ServiceYears || '無'}</td>
+            <td>${employee.DeptName || '無'}</td>
+            <td>
+              <a href="index.html?code=${employee.Code}" class="btn btn-primary btn-sm">查看名片</a>
+            </td>
+          </tr>
+        `);
+        });
+    }
+
+    // 下載 JSON
+    function downloadJson() {
+        $.ajax({
+            url: 'http://192.168.100.150:3000/api/employees',
+            method: 'GET',
+            success: function(employees) {
+                const jsonData = JSON.stringify(employees, null, 2);
+                const blob = new Blob([jsonData], { type: 'application/json;charset=utf-8' });
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+                link.href = url;
+                link.download = `employees_${timestamp}.json`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+                showToast('JSON 檔案已下載');
+            },
+            error: function(xhr) {
+                showToast('下載 JSON 失敗：' + (xhr.responseJSON?.error || '無法取得員工清單'));
+            }
+        });
+    }
+    // 顯示 toast 通知
+    function showToast(message) {
+        let toast = document.getElementById('toast-message');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'toast-message';
+            document.body.appendChild(toast);
+        }
+        toast.textContent = message;
+        toast.style.opacity = '1';
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => {
+                if (toast.parentNode) toast.parentNode.removeChild(toast);
+            }, 300);
+        }, 2000);
+    }
+
+    // Load employee list on page load
+    $(document).ready(function() {
+        loadEmployeeList();
+    });
+</script>
+</body>
+</html>
