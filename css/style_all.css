@@ -1,0 +1,722 @@
+/* css/style.css */
+:root {
+    --primary-color: #009c44;
+    --text-color: #333;
+    --footer-height: 280px;
+}
+
+/* ===== 防止系統字型放大導致跑版 ===== */
+html {
+    /* 強制禁用 iOS/Android 系統自動縮放字型 */
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+    /* 確保 1rem = 16px，不受系統設定影響 */
+    font-size: 16px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    /* 靠頂對齊，避免 body 垂直置中壓縮 card */
+    align-items: flex-start;
+    min-height: 100dvh;
+}
+
+body.active {
+    overflow: hidden;
+}
+
+/* ===== 主容器：三段 Flex 佈局 ===== */
+.card-container {
+    width: 100%;
+    max-width: 440px; /* 涵蓋 iPhone 17 Pro Max 440px */
+    background-color: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* ===== 上段：Header (含大頭照壓線) ===== */
+.card-header {
+    position: relative;   /* 作為大頭照 overflow 的參考點 */
+    flex-shrink: 0;       /* 絕對不壓縮 */
+}
+
+/* Header 背景圖區 */
+.header {
+    background-image: url('../assets/header.png');
+    background-size: 100% 100%;   /* 拉伸填滿加高容器 */
+    background-position: top center;
+    background-repeat: no-repeat;
+    /* 底圖高度 680px，加高綠色區域讓 Logo 與大頭照有更多間距 */
+    aspect-ratio: 1080 / 680;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    /* 8% 讓 Logo 偏上，騰出空間給大頭照 */
+    padding-top: 8%;
+}
+
+.header .logo {
+    height: 40px;
+    object-fit: contain;
+}
+
+/* 大頭照：壓在 header 弧線中間 */
+.profile-section {
+    position: relative;
+    /*
+     * 精確公式：margin-top = -(W × 0.6296 × 0.355 + pic_h/2) - 30px
+     *         = -(22.4vw + 40px)
+     * header_h = W × 680/1080, 弧線中心 = header_h × 0.645
+     * 大頭照固定 140px → pic_h/2 = 70px
+     */
+    margin-top: calc(-22.4vw - 40px);
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+}
+
+.profile-pic-wrapper {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    overflow: hidden;
+    /* 白色邊框讓大頭照與背景對比清楚 */
+    border: 4px solid #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+.profile-pic {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* ===== 中段：內容區 ===== */
+.card-main {
+    flex: 1;               /* 撐開所有剩餘空間，確保 footer 被推到底 */
+    padding: 0 12%;        /* 左右各 12%，依螢幕寬度自動計算 */
+    padding-bottom: 20px;
+    overflow-y: auto;      /* 內容過多時可捲動，絕對不會壓到 footer */
+    display: flex;
+    flex-direction: column;
+}
+
+/* 個人資訊區 */
+.info-section {
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+.dept-title {
+    /* 使用 clamp 確保在 320px~440px 間不斷行 */
+    font-size: clamp(13px, 3.5vw, 16px);
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-color);
+    /* 防止斷行 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.name {
+    font-size: clamp(20px, 5.5vw, 26px);
+    color: var(--text-color);
+    margin-bottom: 4px;
+    white-space: nowrap;
+}
+
+.nickname {
+    font-size: clamp(14px, 3.5vw, 16px);
+    font-weight: 500;
+}
+
+.english-name {
+    font-size: clamp(13px, 3.5vw, 15px);
+    font-weight: 400;
+    color: #555;
+}
+
+/* 聯絡列表 */
+.contact-list {
+    list-style: none;
+    padding-top: 16px;
+    /* 不設固定寬度，由 card-main 的 padding 8% 控制 */
+    width: 100%;
+}
+
+.contact-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 14px;
+    /* 防止單行聯絡資訊斷行 */
+    flex-wrap: nowrap;
+    overflow: hidden;
+}
+
+.icon-box {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;   /* 絕對不壓縮圖示寬度 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.icon-box.icon-line {
+    background-color: #00b900;
+    border-radius: 50%;
+}
+
+.icon-box img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.icon-box.icon-line img,
+.icon-box.icon-web img {
+    width: 16px;
+    height: 16px;
+}
+
+.contact-text {
+    font-size: clamp(13px, 3.5vw, 15px);
+    letter-spacing: 0.5px;
+    white-space: nowrap;     /* 每行聯絡資訊不斷行 */
+    overflow: hidden;
+    text-overflow: ellipsis; /* 過長時以 ... 截斷 */
+}
+
+/* Email 和 URL 允許縮小顯示，不允許換行 */
+.contact-text a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ===== 下段：Footer (波浪 + 按鈕) ===== */
+.card-footer {
+    flex-shrink: 0;           /* 高度固定，不被壓縮 */
+    height: var(--footer-height);
+    position: relative;
+    overflow: hidden;         /* 波浪圖不超出 footer 範圍 */
+}
+
+/* 底部波浪圖：完整佔滿 footer */
+.bottom-bg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.bottom-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: bottom;  /* 確保看到波浪最底部最完整的部分 */
+    display: block;
+}
+
+/* 按鈕：位於 footer 右側，與波浪頂部對齊 */
+.actions {
+    position: absolute;
+    /* 讓按鈕與波浪突起的頂部對齊，約在 footer 上方 60% 處 */
+    top: 20px;
+    right: 5%;
+    display: flex;
+    gap: 12px;
+    z-index: 10;
+}
+
+.actions button {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: none;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.actions button:hover {
+    transform: scale(1.1);
+}
+
+.actions button img {
+    width: 26px;
+    height: 26px;
+}
+
+/* ===== QR Code 彈窗樣式 ===== */
+.popup-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-mask.active {
+    display: flex;
+}
+
+.modal {
+    background-color: #fff;
+    width: 80%;
+    max-width: 320px;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+}
+
+.modal h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+#qrcode-img-container img {
+    width: 180px;
+    height: 180px;
+    margin-bottom: 20px;
+}
+
+.btn-outline {
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 8px 20px;
+    border-radius: 20px;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-outline:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+/* ===== 響應式 Media Queries =====
+ * 精確公式: margin-top = calc(-22.4vw - pic_h/2)
+ * 原理: header_h = W × 0.6296 (1080/680), 弧線中心 = header_h × 0.645
+ * 大頭照中心對齊弧線: margin = -(header_h × 0.355 + pic_h/2)
+ * ================================= */
+
+/* iPhone SE 1st Gen — viewport 320px */
+@media (max-width: 320px) {
+    .dept-title,
+    .contact-text {
+        font-size: 12px;
+    }
+
+    .card-footer {
+        height: 220px;
+    }
+}
+
+/* iPhone SE 2nd/3rd — viewport 321~375px */
+@media (min-width: 321px) and (max-width: 375px) {
+    .card-footer {
+        height: 240px;
+    }
+}
+
+/* 矮螢幕（橫向 / 小手機縱向 — max-height: 700px） */
+@media (max-height: 700px) {
+    .header {
+        padding-top: 5%;
+    }
+
+    .info-section {
+        padding-top: 10px;
+        padding-bottom: 6px;
+    }
+
+    .contact-list {
+        padding-top: 8px;
+    }
+
+    .contact-list li {
+        margin-bottom: 8px;
+    }
+
+    .card-footer {
+        height: 220px;
+    }
+}
+
+/* ===== 平板 / 桌面 響應式 =====
+ * 斷點: 768 / 1024 / 1280 / 1440 / 1536 / 1920px
+ * Footer 高度維持精簡，不被內容壓迫
+ * ================================= */
+
+/* iPad Mini / iPad Air — viewport ≥ 768px
+   card max-width 600px, pic 180px */
+@media (min-width: 768px) {
+    .card-container {
+        max-width: 600px;
+    }
+
+    .header {
+        padding-top: 12%;
+    }
+
+    .header .logo {
+        height: 50px;
+    }
+
+    .profile-pic-wrapper {
+        width: 180px;
+        height: 180px;
+        border-width: 5px;
+    }
+
+    .profile-section {
+        /* card 600px: header_h=378, pic 180px */
+        margin-top: -194px;
+    }
+
+    .card-main {
+        padding-top: 30px;
+    }
+
+    .dept-title {
+        font-size: 18px;
+    }
+
+    .name {
+        font-size: 32px;
+    }
+
+    .nickname {
+        font-size: 18px;
+    }
+
+    .english-name {
+        font-size: 18px;
+    }
+
+    .contact-list {
+        padding-top: 24px;
+    }
+
+    .contact-list li {
+        margin-bottom: 18px;
+    }
+
+    .icon-box {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        margin-right: 14px;
+    }
+
+    .icon-box img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .icon-box.icon-line img,
+    .icon-box.icon-web img {
+        width: 22px;
+        height: 22px;
+    }
+
+    .contact-text {
+        font-size: 18px;
+    }
+
+    .card-footer {
+        height: 380px;
+    }
+
+    .actions {
+        top: 25px;
+        gap: 14px;
+    }
+
+    .actions button {
+        width: 56px;
+        height: 56px;
+    }
+
+    .actions button img {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+/* iPad Pro / 小筆電 — viewport ≥ 1024px
+   card max-width 700px, pic 200px */
+@media (min-width: 1024px) {
+    .card-container {
+        max-width: 700px;
+    }
+
+    .header {
+        padding-top: 13%;
+    }
+
+    .header .logo {
+        height: 55px;
+    }
+
+    .profile-pic-wrapper {
+        width: 200px;
+        height: 200px;
+        border-width: 6px;
+    }
+
+    .profile-section {
+        /* card 700px: header_h=441, pic 200px */
+        margin-top: -227px;
+    }
+
+    .card-main {
+        padding-top: 35px;
+    }
+
+    .dept-title {
+        font-size: 20px;
+    }
+
+    .name {
+        font-size: 36px;
+    }
+
+    .nickname {
+        font-size: 20px;
+    }
+
+    .english-name {
+        font-size: 20px;
+    }
+
+    .contact-list {
+        padding-top: 28px;
+    }
+
+    .contact-list li {
+        margin-bottom: 20px;
+    }
+
+    .icon-box {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        margin-right: 16px;
+    }
+
+    .icon-box img {
+        width: 34px;
+        height: 34px;
+    }
+
+    .icon-box.icon-line img,
+    .icon-box.icon-web img {
+        width: 24px;
+        height: 24px;
+    }
+
+    .contact-text {
+        font-size: 20px;
+    }
+
+    .card-footer {
+        height: 420px;
+    }
+
+    .actions {
+        top: 25px;
+        gap: 16px;
+    }
+
+    .actions button {
+        width: 60px;
+        height: 60px;
+    }
+
+    .actions button img {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+/* 筆電 1280~1439px — viewport ≥ 1280px
+   card max-width 800px, pic 220px */
+@media (min-width: 1280px) {
+    .card-container {
+        max-width: 800px;
+    }
+
+    .header {
+        padding-top: 14%;
+    }
+
+    .header .logo {
+        height: 60px;
+    }
+
+    .profile-pic-wrapper {
+        width: 220px;
+        height: 220px;
+        border-width: 6px;
+    }
+
+    .profile-section {
+        /* card 800px: header_h=504, pic 220px */
+        margin-top: -259px;
+    }
+
+    .card-main {
+        padding-top: 40px;
+    }
+
+    .dept-title {
+        font-size: 22px;
+    }
+
+    .name {
+        font-size: 40px;
+    }
+
+    .nickname {
+        font-size: 22px;
+    }
+
+    .english-name {
+        font-size: 22px;
+    }
+
+    .contact-list {
+        padding-top: 32px;
+    }
+
+    .contact-list li {
+        margin-bottom: 22px;
+    }
+
+    .icon-box {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        margin-right: 18px;
+    }
+
+    .icon-box img {
+        width: 38px;
+        height: 38px;
+    }
+
+    .icon-box.icon-line img,
+    .icon-box.icon-web img {
+        width: 26px;
+        height: 26px;
+    }
+
+    .contact-text {
+        font-size: 22px;
+    }
+
+    .card-footer {
+        height: 450px;
+    }
+
+    .actions {
+        top: 25px;
+        gap: 18px;
+    }
+
+    .actions button {
+        width: 64px;
+        height: 64px;
+    }
+
+    .actions button img {
+        width: 34px;
+        height: 34px;
+    }
+}
+
+/* 大筆電 / 小桌機 — viewport ≥ 1440px */
+@media (min-width: 1440px) {
+    .card-footer {
+        height: 460px;
+    }
+}
+
+/* 大桌機 — viewport ≥ 1536px */
+@media (min-width: 1536px) {
+    .card-footer {
+        height: 470px;
+    }
+}
+
+/* Full HD 桌機 — viewport ≥ 1920px */
+@media (min-width: 1920px) {
+    .card-footer {
+        height: 480px;
+    }
+}
+
+/* 平板/桌面 橫向矮螢幕 — height ≤ 900px 且 width ≥ 768px */
+@media (min-width: 768px) and (max-height: 900px) {
+    .card-footer {
+        height: 300px;
+    }
+
+    .card-main {
+        padding-top: 20px;
+    }
+
+    .info-section {
+        padding-top: 10px;
+        padding-bottom: 6px;
+    }
+
+    .contact-list {
+        padding-top: 12px;
+    }
+
+    .contact-list li {
+        margin-bottom: 10px;
+    }
+}
