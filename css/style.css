@@ -15,7 +15,7 @@ html {
 body {
     font-family: 'Noto Sans TC', sans-serif;
     /* 移除背景色，設為純白 */
-    background-color: #eee;
+    background-color: #333;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -68,19 +68,28 @@ body::before {
 }
 
 .header {
-    /* 確保與背景延伸柱顏色完美銜接，消除頂部細微白邊 */
-    background-image: url('../assets/header.png');
-    background-size: 100% 100%;
-    background-position: top center;
-    background-repeat: no-repeat;
+    /* 背景圖改由 HTML <img class="header-bg"> 控制，避免 CSS 相對路徑部署問題 */
+    position: relative;
     aspect-ratio: 1080 / 680;
     width: 100cqw;
     display: flex;
     justify-content: center;
     padding-top: 10cqw;
+    overflow: hidden;
+}
+
+.header-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    z-index: 0;
 }
 
 .header .logo {
+    position: relative;
+    z-index: 1;
     height: 9cqw;
     object-fit: contain;
 }
@@ -221,6 +230,7 @@ body::before {
     overflow: hidden;
     margin-bottom: 10cqw;
     /* 增加底部邊距，將整個 Footer 往上提 */
+    background-color: white;
 }
 
 .bottom-bg {
